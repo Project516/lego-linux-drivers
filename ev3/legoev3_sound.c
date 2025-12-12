@@ -663,7 +663,7 @@ static int snd_legoev3_probe(struct platform_device *pdev)
 
 	pwm_apply_args(pwm);
 
-	/* This lets us set the pwm duty cycle in an atomic context */
+	/* Mark the device as safe for use in IRQ (atomic) contexts */
 	pm_runtime_irq_safe(&pwm->chip->dev);
 
 	err = pwm_enable(pwm);

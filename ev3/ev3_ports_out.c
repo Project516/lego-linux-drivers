@@ -806,7 +806,7 @@ static int ev3_output_port_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "Failed to start pwm.\n");
 		goto err_stop_iio_cb;
 	}
-	/* This lets us set the pwm duty cycle in an atomic context */
+	/* Mark the device as safe for use in IRQ (atomic) contexts */
 	pm_runtime_irq_safe(&data->pwm->chip->dev);
 
 	data->out_port.name = ev3_output_port_type.name;
