@@ -339,7 +339,7 @@ static int ev3_output_port_set_duty_cycle(void *context, unsigned duty)
 	if (ret)
 		return ret;
 
-	return pwm_apply_state(data->pwm, &state);
+	return pwm_apply_might_sleep(data->pwm, &state);
 }
 
 static struct dc_motor_ops ev3_output_port_motor_ops = {
@@ -807,7 +807,7 @@ static int ev3_output_port_probe(struct platform_device *pdev)
 		goto err_stop_iio_cb;
 	}
 	/* This lets us set the pwm duty cycle in an atomic context */
-	pm_runtime_irq_safe(data->pwm->chip->dev);
+	pm_runtime_irq_safe(&data->pwm->chip->dev);
 
 	data->out_port.name = ev3_output_port_type.name;
 	snprintf(data->out_port.address, LEGO_NAME_SIZE, "%s",
@@ -854,7 +854,7 @@ err_release_iio_cb:
 	return err;
 }
 
-static int ev3_output_port_remove(struct platform_device *pdev)
+static void ev3_output_port_remove(struct platform_device *pdev)
 {
 	struct ev3_output_port_data *data = dev_get_drvdata(&pdev->dev);
 
@@ -873,7 +873,6 @@ static int ev3_output_port_remove(struct platform_device *pdev)
 	iio_channel_stop_all_cb(data->iio_cb);
 	iio_channel_release_all_cb(data->iio_cb);
 
-	return 0;
 }
 
 static const struct of_device_id ev3_output_port_dt_ids[] = {

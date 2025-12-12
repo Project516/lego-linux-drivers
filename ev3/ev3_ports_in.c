@@ -1254,7 +1254,7 @@ err_release_iio_cb:
 	return err;
 }
 
-static int ev3_input_port_remove(struct platform_device *pdev)
+static void ev3_input_port_remove(struct platform_device *pdev)
 {
 	struct ev3_input_port_data *data = dev_get_drvdata(&pdev->dev);
 
@@ -1273,7 +1273,6 @@ static int ev3_input_port_remove(struct platform_device *pdev)
 	iio_channel_release_all_cb(data->iio_cb);
 	ev3_input_port_float(data);
 
-	return 0;
 }
 
 static const struct of_device_id ev3_input_port_dt_ids[] = {
