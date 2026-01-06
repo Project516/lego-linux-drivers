@@ -834,10 +834,9 @@ static int ev3_output_port_probe(struct platform_device *pdev)
 
 	data->con_state = CON_STATE_INIT;
 
-	hrtimer_init(&data->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-	data->timer.function = ev3_output_port_timer_callback;
+	hrtimer_setup(&data->timer, ev3_output_port_timer_callback, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 	hrtimer_start(&data->timer, ktime_set(0, OUTPUT_PORT_POLL_NS),
-		      HRTIMER_MODE_REL);
+              HRTIMER_MODE_REL);
 
 	if (!IS_ERR_OR_NULL(ev3_ports_debug))
 		ev3_output_port_debug_init(data);

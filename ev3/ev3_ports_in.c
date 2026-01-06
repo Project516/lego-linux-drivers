@@ -1230,8 +1230,7 @@ static int ev3_input_port_probe(struct platform_device *pdev)
 
 	INIT_WORK(&data->change_uevent_work, ev3_input_port_change_uevent_work);
 	INIT_WORK(&data->work, NULL);
-	hrtimer_init(&data->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-	data->timer.function = ev3_input_port_timer_callback;
+	hrtimer_setup(&data->timer, ev3_input_port_timer_callback, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 
 	data->con_state = CON_STATE_INIT;
 	hrtimer_start(&data->timer, ktime_set(0, INPUT_PORT_POLL_NS),

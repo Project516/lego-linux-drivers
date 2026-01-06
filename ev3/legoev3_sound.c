@@ -613,8 +613,7 @@ static int snd_legoev3_create(struct snd_card *card, struct pwm_device *pwm,
 	chip->pwm = pwm;
 	chip->ena_gpio = gpio;
 	INIT_WORK(&chip->disable_work, snd_legoev3_disable_work);
-	hrtimer_init(&chip->pcm_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-	chip->pcm_timer.function = &snd_legoev3_pcm_timer_callback;
+	hrtimer_setup(&chip->pcm_timer, snd_legoev3_pcm_timer_callback, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 
 	err = snd_device_new(card, SNDRV_DEV_LOWLEVEL, chip, &ops);
 	if (err < 0)
