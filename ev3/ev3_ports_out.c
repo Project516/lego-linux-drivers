@@ -339,7 +339,7 @@ static int ev3_output_port_set_duty_cycle(void *context, unsigned duty)
 	if (ret)
 		return ret;
 
-	return pwm_apply_might_sleep(data->pwm, &state);
+	return pwm_apply_atomic(data->pwm, &state);
 }
 
 static struct dc_motor_ops ev3_output_port_motor_ops = {
